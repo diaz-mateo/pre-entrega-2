@@ -5,7 +5,7 @@ let usuario = {
     contraseña: ''
 };
 
-// Objeto tratamiento seleccionado
+// Objeto para el tratamiento seleccionado
 let tratamientoSeleccionado = {
     nombre: '',
     precio: 0,
@@ -23,26 +23,22 @@ const tratamientos = [
     { nombre: 'Mindfulness', precio: 55 }
 ];
 
-// Función para capturar entradas
+// Función para capturar entradas del usuario
 function capturarEntrada(mensaje) {
     let entrada;
     do {
         entrada = prompt(mensaje);
-        if (entrada === '' || entrada === null) {
-            alert('Por favor, ingresa un valor válido.');
-        }
-    } while (entrada === '' || entrada === null);
+        if (!entrada) alert('Por favor, ingresa un valor válido.');
+    } while (!entrada);
     return entrada;
 }
 
-// Función para confirmar datos
+// Función para confirmar datos ingresados
 function confirmarDato(dato, mensaje) {
     let confirmacion;
     do {
         confirmacion = prompt(mensaje);
-        if (confirmacion !== dato) {
-            alert('El dato no coincide. Intenta de nuevo.');
-        }
+        if (confirmacion !== dato) alert('El dato no coincide. Intenta de nuevo.');
     } while (confirmacion !== dato);
     return true;
 }
@@ -57,13 +53,13 @@ function calcularTotal(precio, cantidad) {
     return precio * cantidad;
 }
 
-// Flujo principal del programa
+// Flujo principal del simulador
 function iniciarSimulador() {
-    // Captura del nombre
+    // Capturar nombre del usuario
     usuario.nombre = capturarEntrada("¡Bienvenido a Harmony Psicoterapia! 😊 Por favor ingresa tu nombre:");
     alert(`¡Bienvenido(a) ${usuario.nombre} a Harmony Psicoterapia!`);
 
-    // Registro de usuario
+    // Registrar datos del usuario
     usuario.usuario = capturarEntrada('Por favor, ingresa tu nombre de usuario:');
     confirmarDato(usuario.usuario, 'Confirma tu nombre de usuario:');
 
@@ -71,7 +67,7 @@ function iniciarSimulador() {
     confirmarDato(usuario.contraseña, 'Confirma tu contraseña:');
     alert(`Usuario registrado con éxito. Bienvenido(a), ${usuario.usuario}.`);
 
-    // Selección de tratamiento
+    // Selección del tratamiento
     let tratamientoNombre = capturarEntrada(
         "¿En qué tratamiento estás interesado(a)?\n - Psicología\n - Psicoterapia\n - Hipnoterapia\n - Terapia EMDR\n - Terapia ACT\n - Mindfulness"
     );
@@ -83,12 +79,14 @@ function iniciarSimulador() {
 
         alert(`Elegiste ${tratamientoSeleccionado.nombre}. El precio es ${tratamientoSeleccionado.precio} soles.`);
 
-        // Capturar cantidad
+        // Capturar cantidad de sesiones
         tratamientoSeleccionado.cantidad = parseInt(capturarEntrada('¿Para cuántas personas deseas el tratamiento?'));
         tratamientoSeleccionado.total = calcularTotal(tratamientoSeleccionado.precio, tratamientoSeleccionado.cantidad);
 
         // Mostrar resultado final
-        alert(`Has elegido ${tratamientoSeleccionado.cantidad} sesiones de ${tratamientoSeleccionado.nombre}.\nEl total a pagar es ${tratamientoSeleccionado.total} soles.`);
+        alert(
+            `Has elegido ${tratamientoSeleccionado.cantidad} sesiones de ${tratamientoSeleccionado.nombre}.\nEl total a pagar es ${tratamientoSeleccionado.total} soles.`
+        );
     } else {
         alert('Lo sentimos, el tratamiento no está disponible.');
     }
@@ -97,5 +95,5 @@ function iniciarSimulador() {
     alert(`Gracias por visitar Harmony Psicoterapia. ¡Esperamos verte pronto, ${usuario.nombre}! 😊`);
 }
 
-// Iniciar el programa
+// Iniciar el simulador
 iniciarSimulador();

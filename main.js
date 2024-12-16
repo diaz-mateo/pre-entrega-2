@@ -1,99 +1,109 @@
-// Objeto usuario
-let usuario = {
-    nombre: '',
-    usuario: '',
-    contraseña: ''
-};
+// Función para validar que una entrada no esté vacía ni contenga caracteres inválidos
+function validarTexto(entrada, mensajeError) {
+    const regex = /^[a-zA-Z\sáéíóúÁÉÍÓÚñÑ]+$/; // Solo letras y espacios permitidos
+    while (!entrada || !regex.test(entrada)) {
+        alert(mensajeError);
+        entrada = prompt("Por favor, intenta nuevamente:");
+    }
+    return entrada.trim();
+}
 
-// Objeto para el tratamiento seleccionado
-let tratamientoSeleccionado = {
-    nombre: '',
-    precio: 0,
-    cantidad: 0,
-    total: 0
-};
-
-// Lista de tratamientos disponibles
-const tratamientos = [
-    { nombre: 'Psicología', precio: 45 },
-    { nombre: 'Psicoterapia', precio: 47 },
-    { nombre: 'Hipnoterapia', precio: 49 },
-    { nombre: 'Terapia EMDR', precio: 51 },
-    { nombre: 'Terapia ACT', precio: 53 },
-    { nombre: 'Mindfulness', precio: 55 }
-];
-
-// Función para capturar entradas del usuario
-function capturarEntrada(mensaje) {
-    let entrada;
-    do {
-        entrada = prompt(mensaje);
-        if (!entrada) alert('Por favor, ingresa un valor válido.');
-    } while (!entrada);
+// Función para validar números positivos
+function validarNumero(entrada, mensajeError) {
+    while (isNaN(entrada) || entrada <= 0) {
+        alert(mensajeError);
+        entrada = parseInt(prompt("Por favor, intenta nuevamente:"));
+    }
     return entrada;
 }
 
-// Función para confirmar datos ingresados
-function confirmarDato(dato, mensaje) {
-    let confirmacion;
-    do {
-        confirmacion = prompt(mensaje);
-        if (confirmacion !== dato) alert('El dato no coincide. Intenta de nuevo.');
-    } while (confirmacion !== dato);
-    return true;
-}
+// Mensaje de bienvenida y captura del nombre
+let nombre = prompt("¡Bienvenido a Harmony Psicoterapia! 😊 Por favor ingresa tu nombre:");
+nombre = validarTexto(nombre, "El nombre no puede estar vacío o contener caracteres inválidos.");
+alert(`¡Bienvenido(a) ${nombre} a Harmony Psicoterapia!`);
 
-// Función para buscar tratamientos
-function buscarTratamiento(nombre) {
-    return tratamientos.find(tratamiento => tratamiento.nombre.toLowerCase() === nombre.toLowerCase());
-}
+// Variables iniciales para el registro
+let userName = "";
+let password = "";
+let confirmUserName = "";
+let confirmPassword = "";
+let continuar = true;
 
-// Función para calcular el precio total
-function calcularTotal(precio, cantidad) {
-    return precio * cantidad;
-}
-
-// Flujo principal del simulador
-function iniciarSimulador() {
-    // Capturar nombre del usuario
-    usuario.nombre = capturarEntrada("¡Bienvenido a Harmony Psicoterapia! 😊 Por favor ingresa tu nombre:");
-    alert(`¡Bienvenido(a) ${usuario.nombre} a Harmony Psicoterapia!`);
-
-    // Registrar datos del usuario
-    usuario.usuario = capturarEntrada('Por favor, ingresa tu nombre de usuario:');
-    confirmarDato(usuario.usuario, 'Confirma tu nombre de usuario:');
-
-    usuario.contraseña = capturarEntrada('Ingresa tu contraseña:');
-    confirmarDato(usuario.contraseña, 'Confirma tu contraseña:');
-    alert(`Usuario registrado con éxito. Bienvenido(a), ${usuario.usuario}.`);
-
-    // Selección del tratamiento
-    let tratamientoNombre = capturarEntrada(
-        "¿En qué tratamiento estás interesado(a)?\n - Psicología\n - Psicoterapia\n - Hipnoterapia\n - Terapia EMDR\n - Terapia ACT\n - Mindfulness"
-    );
-    let tratamiento = buscarTratamiento(tratamientoNombre);
-
-    if (tratamiento) {
-        tratamientoSeleccionado.nombre = tratamiento.nombre;
-        tratamientoSeleccionado.precio = tratamiento.precio;
-
-        alert(`Elegiste ${tratamientoSeleccionado.nombre}. El precio es ${tratamientoSeleccionado.precio} soles.`);
-
-        // Capturar cantidad de sesiones
-        tratamientoSeleccionado.cantidad = parseInt(capturarEntrada('¿Para cuántas personas deseas el tratamiento?'));
-        tratamientoSeleccionado.total = calcularTotal(tratamientoSeleccionado.precio, tratamientoSeleccionado.cantidad);
-
-        // Mostrar resultado final
-        alert(
-            `Has elegido ${tratamientoSeleccionado.cantidad} sesiones de ${tratamientoSeleccionado.nombre}.\nEl total a pagar es ${tratamientoSeleccionado.total} soles.`
-        );
+// Registro del usuario
+do {
+    userName = prompt("Por favor, ingresa tu nombre de usuario (¡Sólo si tienes uno!):");
+    if (!userName) {
+        alert("¡No te preocupes! Continuarás como invitado en la página.");
+        continuar = false;
     } else {
-        alert('Lo sentimos, el tratamiento no está disponible.');
+        // Validar usuario
+        userName = validarTexto(userName, "El nombre de usuario no puede estar vacío ni contener caracteres inválidos.");
+        alert(`¡Bienvenido usuario: ${userName}!`);
+
+        // Confirmar nombre de usuario
+        do {
+            confirmUserName = prompt("Por favor, confirma tu nombre de usuario:");
+            if (confirmUserName !== userName) {
+                alert("El nombre de usuario no coincide. Intenta de nuevo.");
+            }
+        } while (confirmUserName !== userName);
+
+        // Solicitar y confirmar contraseña
+        do {
+            password = prompt("Ahora, ingresa tu contraseña:");
+            if (!password) {
+                alert("La contraseña no puede estar vacía.");
+                continue;
+            }
+            confirmPassword = prompt("Por favor, confirma tu contraseña:");
+            if (confirmPassword !== password) {
+                alert("La contraseña no coincide. Intenta de nuevo.");
+            }
+        } while (confirmPassword !== password);
+
+        alert(`¡Perfecto! Tu usuario es: ${userName} y tu contraseña ha sido registrada con éxito.`);
+        continuar = false;
     }
+} while (continuar);
 
-    // Mostrar despedida
-    alert(`Gracias por visitar Harmony Psicoterapia. ¡Esperamos verte pronto, ${usuario.nombre}! 😊`);
-}
+// Lista de tratamientos
+const tratamientos = {
+    "Psicología": 45,
+    "Psicoterapia": 47,
+    "Hipnoterapia": 49,
+    "Terapia EMDR": 51,
+    "Terapia ACT": 53,
+    "Mindfulness": 55
+};
 
-// Iniciar el simulador
-iniciarSimulador();
+// Selección del tratamiento
+let producto = "";
+let precio = 0;
+
+do {
+    producto = prompt(
+        "Ahora dime, ¿en qué tratamiento estás interesado(a)?\n - Psicología\n - Psicoterapia\n - Hipnoterapia\n - Terapia EMDR\n - Terapia ACT\n - Mindfulness"
+    );
+
+    producto = validarTexto(producto, "El tratamiento no puede estar vacío ni contener caracteres inválidos.");
+    precio = tratamientos[producto];
+
+    if (precio) {
+        alert(`Elegiste ${producto}. El precio es ${precio} soles.`);
+    } else {
+        alert("Tratamiento no disponible. Por favor, elige una opción válida.");
+        producto = ""; // Reinicia la selección
+    }
+} while (!precio);
+
+alert(`Gracias por elegir el tratamiento: ${producto}`);
+
+// Capturar cantidad de sesiones
+let cantidad = parseInt(prompt("¡Genial! Ahora dime: ¿Para cuántas personas deseas el tratamiento indicado?"));
+cantidad = validarNumero(cantidad, "La cantidad debe ser un número mayor a 0.");
+
+const precioTotal = cantidad * precio;
+alert(`Has elegido ${cantidad} sesiones de ${producto}. El total a pagar es ${precioTotal} soles.`);
+
+// Mensaje de despedida
+alert(`Gracias por confiar en Harmony Psicoterapia, ${nombre}. ¡Te esperamos pronto! 😊`);
